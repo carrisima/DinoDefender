@@ -1,0 +1,42 @@
+{
+    "ground": {
+        "sx": 0,
+        "sy": 0,
+        "cols": 1,
+        "tilew": 173,
+        "tileh": 100,
+        "frames": 1
+    },
+    "house": {
+        "sx": 20,
+        "sy": 325,
+        "cols": 1,
+        "tilew": 280,
+        "tileh": 175,
+        "frames": 1
+    },
+    "big_tree": {
+        "sx": 400,
+        "sy": 375,
+        "cols": 1,
+        "tilew": 100,
+        "tileh": 150,
+        "frames": 1
+    },
+    "small_tree": {
+        "sx": 0,
+        "sy": 869,
+        "cols": 9,
+        "tilew": 100,
+        "tileh": 100,
+        "frames": 9
+    },
+    "bush": {
+        "sx": 0,
+        "sy": 969,
+        "cols": 2,
+        "tilew": 100,
+        "tileh": 100,
+        "frames": 2
+    }
+}

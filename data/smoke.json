@@ -1,0 +1,10 @@
+{
+    "smokeEffect": {
+        "sx": 0,
+        "sy": 0,
+        "cols": 2,
+        "tilew": 105,
+        "tileh": 70,
+        "frames": 7
+    }
+}

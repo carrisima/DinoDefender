@@ -1,0 +1,239 @@
+
+@font-face {
+  font-family: DINWeb-CondBold;
+  src: url("../fonts/DINWeb-CondBold.eot");
+}
+
+@font-face {
+  font-family: DINWeb-CondBold;
+  src: url("../fonts/DINWeb-CondBold.woff") format("woff");
+}
+
+@font-face {
+  font-family: DINWeb-CondMedium;
+  src: url("../fonts/DINWeb-CondMedium.eot");
+}
+
+@font-face {
+  font-family: DINWeb-CondMedium;
+  src: url("../fonts/DINWeb-CondMedium.woff") format("woff");
+}
+
+@font-face {
+  font-family: DINWebProRegular;
+  src: url(../fonts/DINWebPro.eot);
+}
+
+@font-face {
+  font-family: DINWebProRegular;
+  src: url(../fonts/DINWebPro.woff) format("woff");
+}
+
+/*=========================================*/
+/* Header                   */
+/*=========================================*/
+/*
+#header 
+{
+	//display:block;
+	//position:static;
+	top: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	//margin-bottom: 50px;
+	min-height: 10px;
+	text-transform: uppercase;
+	background: #fff;
+	z-index: 2;
+	-webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+}
+*/
+
+.title
+{
+	margin: 6px 0 0 0;
+	padding-left: 1em;
+	color: #2e2e2e;
+	font: 30px 'DINWeb-CondMedium', helvetica, arial, sans-serif;
+	line-height: 100%;
+	text-transform: uppercase;
+	//text-align: center;
+}
+
+/*=========================================*/
+/* Class Content/Lecture                   */
+/*=========================================*/
+
+html, body 
+{
+	padding-left: 10px;
+	padding-bottom: 20px;
+	font-family: 'DINWebProRegular', helvetica, arial, serif;
+	background: url(../images/background.jpg);
+}
+
+
+#content
+{
+	//padding:50px 0 0 0;
+	
+/*    margin-top:30px;
+	margin-left:10px;
+	margin-bottom:200px;*/
+	//width:1024px;
+	//background: url(../images/background.jpg);
+}
+
+.indent0
+{
+	margin-left:0;
+	margin-bottom:50px;
+	color: #222;
+}
+
+.indent1
+{
+	margin-left:25px;
+	margin-bottom:70px;
+	color: #222;
+}
+
+.indent2
+{
+	margin-left:25px;
+	margin-bottom:0;
+}
+
+.indent3
+{
+	margin-left:25px;
+	margin-bottom:0;
+}
+
+#content p
+{
+	color: #222;
+	margin: 0 0 0.5em 0; //1.0em;
+	//margin-left:1em;
+  //margin: 1em 0;
+  //padding-left: 340px;
+  font-size: 18px;
+  //line-height: 130%;
+}
+
+#content ul
+{
+	color: #4c4c4c;
+	margin-top:10px;
+	margin-left:1.5em;
+	margin-bottom:1em;
+	padding-left:1em;
+	list-style-type:circle;
+	text-align:left;
+}
+
+#content ol 
+{
+	color: #4c4c4c;
+	margin-top:10px;
+	margin-left:1em;
+	margin-bottom:1em;
+	padding-left:1em;
+	text-align:left;
+}
+
+#content li
+{
+	margin-bottom: 0.25em;
+	font-size: 18px;
+	line-height: 120%;
+}
+
+
+#content a 
+{
+  color: #d00;
+}
+
+/*a:hover 
+{
+	text-decoration:none;
+	text-transform:underline;
+}*/
+
+#content h1
+{
+	margin:0 0 10px 0;
+	text-transform:uppercase;
+	color: #86AC3A;
+	font: 36px 'DINWebProRegular', helvetica, arial, serif;
+	font-weight:normal;
+}
+
+#content h2
+{
+	margin:0 0 10px 0;
+	color: #86ac3a;
+	font: 32px 'DINWebProRegular', helvetica, arial, serif;
+	font-weight: normal;
+}
+
+#content h3
+{
+	//margin-left: 48px;
+	//text-transform:uppercase;
+	margin:0 0 0 0;
+	padding:0 0 0 0;
+	color: black;
+	font-weight:normal;
+	font: 22px 'DINWebProRegular', helvetica, arial, serif;
+}
+
+#content h4
+{
+	//margin-left: 48px;
+	text-transform:uppercase;
+	margin:0 0 0 0;
+	padding:0 0 0 0;
+	color: black;
+	font-weight:bold;
+	font: 20px 'DINWebProRegular', helvetica, arial, serif;
+}
+
+
+
+/*=========================================*/
+/* Game Launcher Stuff                     */
+/*=========================================*/
+
+#splashScreen
+{
+    padding-top: 0;
+}
+
+#splashScreen h1
+{
+	text-align: center;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.progress
+{
+    margin: 0 auto;
+    width: 25em;
+    height: 2em;
+    border-radius: 0.5em;
+    overflow: hidden;
+    border: 0.3em solid rgb( 0, 0, 200 );
+}
+
+.progress .indicator
+{
+    background-color: rgb( 200, 200, 0 );
+    height: 100%;
+    width: 0;
+}

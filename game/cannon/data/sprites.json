@@ -1,0 +1,37 @@
+{
+	"ball": {
+		"sx":44,
+		"sy":0,
+		"cols":1,
+		"tilew":63,
+		"tileh":57,
+		"frames":1
+	},
+
+	"target": {
+		"sx":110,
+		"sy":0,
+		"cols":1,
+		"tilew":63,
+		"tileh":58,
+		"frames":1
+	},
+
+	"cannon": {
+		"sx":0,
+		"sy":19,
+		"cols":1,
+		"tilew":40,
+		"tileh":21,
+		"frames":1
+	},
+
+	"block": {
+		"sx":0,
+		"sy":0,
+		"cols":1,
+		"tilew":40,
+		"tileh":19,
+		"frames":1
+	}
+}

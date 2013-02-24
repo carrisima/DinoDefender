@@ -1,0 +1,30 @@
+{
+
+    "blueUfo": {
+        "sx":0,
+        "sy":0,
+        "cols":2,
+        "tilew":74,
+        "tileh":48,
+        "frames":2
+    },
+    "fireball": {
+        "sx":0,
+        "sy":50,
+        "cols":4,
+        "tilew":25,
+        "tileh":25,
+        "frames":4
+    },
+    "cannon": {
+        "sx":0,
+        "sy": 76,
+        "cols":1,
+        "tilew":40,
+        "tileh":24,
+        "frames":1
+    }
+
+
+
+}
