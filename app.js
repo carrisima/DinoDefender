@@ -7,7 +7,7 @@
 var port = process.env.PORT || 80;
 
 // static folder to serve files from
-var gameDirectory = __dirname + "/public";
+var gameDirectory = __dirname;
 
 // Our MongoDB address, which includes the database name
 var mongodbURL = process.env.MONGOHQ_URL || "mongodb://localhost/Dino";
