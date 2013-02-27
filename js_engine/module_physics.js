@@ -475,7 +475,6 @@ Engine.Physics = function() {
                 //set collision group properties
                 if(properties.groupIndex)
                 {
-                    console.log("name: " + properties.sheetName + " index: " + properties.groupIndex);
                     fixtureDef.filter.groupIndex = properties.groupIndex;
                 }
 

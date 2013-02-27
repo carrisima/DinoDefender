@@ -14,7 +14,10 @@ app.run = function (){
         bombTime = 0,
         isActiveBomb = false,
         alienHits = 0,
-        dinoHits = 0 ;
+        dinoHits = 0,
+        DINOWINS = 300,
+        ALIENWINS = 200,
+        gameOver = false;
 //=========================================================================
 // Dino Defender!
 // Dino Art courtesy of Wyverii, http://opengameart.org/content/unsealed-terrex
@@ -400,6 +403,11 @@ app.run = function (){
                 this.parentStage.remove(this);
             }
 
+            if(myEngine.getStage().blueUFO.properties.beenHit === true)
+            {
+                this.parentStage.remove(this);
+            }
+
             this._super(dt);
         },
 
@@ -566,7 +574,7 @@ app.run = function (){
         stage.addComponent("world", PhysicsWorldProps);
         stage.addComponent("camera");
         stage.camera.centerViewportOn( myEngine.width/2, myEngine.height/2 );
-        stage.world.toggleDebugDraw(true);
+       // stage.world.toggleDebugDraw(true);
 
         //todo create Bomb Manager function
 
@@ -576,7 +584,7 @@ app.run = function (){
         stage.insert( newPlayer );
 
         //draw boundaries so UFOs are contained
-        var sky = new BoundrySprite( {z:1, x: canvasW/2, y: 0, shape_width: canvasW,
+        var sky = new BoundrySprite( {z:1, x: canvasW/2, y: -200, shape_width: canvasW,
                 shape_height: 100}),
             ground = new BoundrySprite( {z:1, x: canvasW/2, y: canvasH - 25, shape_width: canvasW,
             shape_height: 50}),
@@ -699,15 +707,15 @@ app.run = function (){
         // Setup level to loop
         myEngine.setGameLoop(function(dt) {
             myEngine.stageGameLoop(dt);
-            if (dinoHits >= 50)
+            if (dinoHits >= DINOWINS)
             {
                 alert("Dino Wins!");
-                //myEngine.stageScene("level");
+                myEngine.stageScene("level");
             }
-            else if (alienHits >= 50)
+            else if (alienHits >= ALIENWINS)
             {
                 alert("Alien Wins!");
-                //myEngine.stageScene("level");
+                myEngine.stageScene("level");
             }
             else
             {
