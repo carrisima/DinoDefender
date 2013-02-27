@@ -72,6 +72,8 @@ app.run = function (){
             restitution: 0.5,
             bodyType: "static"
 
+
+
         },
         init: function(props) {
 
@@ -106,7 +108,7 @@ app.run = function (){
             restitution: 0.5,
             density: 4,
             bodyType: "dynamic",
-
+            groupIndex: -1,
             // gameplay properties
             seconds: 10		// lifetime before destroying self
         },
@@ -155,7 +157,8 @@ app.run = function (){
             shape_height: 20,
             restitution: .5,
             density: 4,
-            bodyType: "kinematic"
+            bodyType: "kinematic",
+            groupIndex: -1
 
         },
 
@@ -363,7 +366,7 @@ app.run = function (){
             restitution: .5,
             density: 4,
             bodyType: "kinematic",
-
+            groupIndex: -2,
             // gameplay properties
             seconds: 3		// lifetime before drop
         },
@@ -461,11 +464,14 @@ app.run = function (){
             speed: 100,
             z: 20,
             scootDir: "right",
+           //physics properties
             shape: "circle",
             shape_radius: 20,
             restitution:.75,
             density: 4,
             bodyType: "kinematic",
+            groupIndex: -2,
+            //gameplay properties
             beenHit: false,
             seconds: 2
         },
@@ -596,6 +602,8 @@ app.run = function (){
             x: (canvasW/2 + 20),
             y: canvasH - 140,
             z:3,
+            //physics properties
+            groupIndex: -1,
             shape: "block",
             restitution: 0.5,
             bodyType: "static",

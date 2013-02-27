@@ -44,7 +44,8 @@ var appLoader = (function() {
         "js_gamefiles/BackgroundCanvas.js",
         "js_gamefiles/CanvasGraphics.js",
         "js_gamefiles/game_animations.js",
-        "js_gamefiles/App.js"
+        "js_gamefiles/App.js",
+        "js_gamefiles/dinoModel.js"
 	];
 
 	//=========================================================================
@@ -130,7 +131,7 @@ var appLoader = (function() {
 					complete: function()
 					{
 						console.log( "Game Engine Files loaded!");
-                        App.run();
+                        app.run();
 					}
 				}
 			]

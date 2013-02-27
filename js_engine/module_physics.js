@@ -471,7 +471,14 @@ Engine.Physics = function() {
 				fixtureDef.friction = properties.friction;
 				fixtureDef.restitution = properties.restitution;
 				fixtureDef.isSensor = properties.isSensor;
-				
+
+                //set collision group properties
+                if(properties.groupIndex)
+                {
+                    console.log("name: " + properties.sheetName + " index: " + properties.groupIndex);
+                    fixtureDef.filter.groupIndex = properties.groupIndex;
+                }
+
 				switch(properties.shape) {
 					case "block":
 						fixtureDef.shape = new B2d.PolygonShape();
