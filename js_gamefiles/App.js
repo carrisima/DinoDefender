@@ -380,8 +380,7 @@ app.run = function (){
             this.play( "twirl" );
             this.addComponent('physics');
             this.bindEvent('contact',this,'checkHit');
-
-
+            isActiveBomb = true;
             //this.bindEvent('step',this,'drop');
         },
         step:function(dt) {
@@ -406,6 +405,7 @@ app.run = function (){
             if(myEngine.getStage().blueUFO.properties.beenHit === true)
             {
                 this.parentStage.remove(this);
+                isActiveBomb = false;
             }
 
             this._super(dt);
@@ -583,7 +583,7 @@ app.run = function (){
         stage.dinoPlayer = newPlayer;
         stage.insert( newPlayer );
 
-        //draw boundaries so UFOs are contained
+        //draw boundaries so UFOs & fireballs are contained
         var sky = new BoundrySprite( {z:1, x: canvasW/2, y: -200, shape_width: canvasW,
                 shape_height: 100}),
             ground = new BoundrySprite( {z:1, x: canvasW/2, y: canvasH - 25, shape_width: canvasW,
@@ -625,7 +625,7 @@ app.run = function (){
         stage.insert(new Engine.Sprite({ sheetName: "big_tree", x: 200, y: canvasH - 150, z:5}));
 
 
-        var newUFO = new UFO( {
+      /*  var newUFO = new UFO( {
             x: 100,
             y: 50,
             z:8,
@@ -633,7 +633,7 @@ app.run = function (){
         } );
 
         stage.blueUFO = newUFO;
-        stage.insert( newUFO );
+        stage.insert( newUFO );*/
 
 
         //stage.addComponent( "camera" );
@@ -750,7 +750,7 @@ app.run = function (){
 
             bombTime -= dt;
             //console.log("dt: " + dt + " bombTime: " + bombTime);
-            if ( bombTime < 0 && isActiveBomb === false){
+            if ( bombTime < 0 && isActiveBomb === false && isActiveUFO){
                 bombTime = 3;
                 var newBomb = new ClassFatMan({ x: myEngine.getStage().blueUFO.properties.x,
                     y: myEngine.getStage().blueUFO.properties.y + 25});
