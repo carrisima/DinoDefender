@@ -3,15 +3,15 @@
 // check Heroku environment variables first
 //
 
-// Port. Default is most likely 80
-var port = process.env.PORT || 80;
+// Port. Default is most likely 3000
+var port = process.env.PORT || 3000;
 
 // static folder to serve files from
 var gameDirectory = __dirname;
 
 // Our MongoDB address, which includes the database name
 var mongodbURL = process.env.MONGOHQ_URL || "mongodb://localhost/Dino";
-
+console.log("mongodbURL: " + mongodbURL);
 //=========================================================================
 // Load our dependencies
 //
@@ -51,7 +51,7 @@ app.configure('production', function(){
 //=========================================================================
 // Start the server!
 //
-app.listen(3000, function(){
+app.listen(port, function(){
     console.log("Updated express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 
