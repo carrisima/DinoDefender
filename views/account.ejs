@@ -1,0 +1,16 @@
+<%
+function printObject(name, obj) {
+        for(var propt in obj) {
+
+                if( typeof obj[propt] === "object" ) {
+                        printObject( name + "." + propt, obj[propt] );
+                } else {
+%>
+        <p><%= name %>.<%= propt %>: <%= obj[propt] %></p>
+<%
+                }
+        }
+}
+%>
+
+<% printObject( "user", user ); %>
