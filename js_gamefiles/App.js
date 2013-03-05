@@ -13,10 +13,10 @@ app.run = function (){
         isActiveUFO,
         bombTime = 0,
         isActiveBomb = false,
-        alienHits = 0,
         dinoHits = 0,
-        DINOWINS = 300,
-        ALIENWINS = 200,
+        dinoHealth = 300,
+        gameTime = 0,
+        gameOverTime =10,
         gameOver = false;
 //=========================================================================
 // Dino Defender!
@@ -271,7 +271,7 @@ app.run = function (){
                 //targetCount--;
 
                 this.play("zapped");
-                alienHits += 5;
+                dinoHealth -= 5;
 
                 //this.parentStage.remove(this);
                 //if(targetCount === 0) { myEngine.stageScene('level'); }
@@ -707,20 +707,14 @@ app.run = function (){
         // Setup level to loop
         myEngine.setGameLoop(function(dt) {
             myEngine.stageGameLoop(dt);
-            if (dinoHits >= DINOWINS)
-            {
-                alert("Dino Wins!");
-                myEngine.stageScene("level");
-            }
-            else if (alienHits >= ALIENWINS)
-            {
-                alert("Alien Wins!");
-                myEngine.stageScene("level");
-            }
-            else
-            {
+            if(!gameOver){
                 manageUFOs();
                 bombManager(dt);
+                gameOver = manageGameTime(dt);
+            }
+            else if(gameOver)
+            {
+                alert("Game Over!");
             }
 
         });
@@ -757,6 +751,20 @@ app.run = function (){
                 myEngine.getStage().insert( newBomb );
                 isActiveBomb = true;
             }
+        }
+
+        function manageGameTime(dt){
+            var minGameTime;
+            gameTime += dt;
+            minGameTime = Math.floor(gameTime);
+            $('#timer').html("<p>gametime: " + minGameTime + "</p>");
+            console.log("gametime: " + minGameTime);
+            if(minGameTime > gameOverTime){
+                return true;
+            } else {
+                return false;
+            }
+
         }
 
     });
