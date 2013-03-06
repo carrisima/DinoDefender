@@ -12,12 +12,15 @@ app.run = function (){
         canvasDims,
         isActiveUFO,
         bombTime = 0,
+        bombSecs = 2,
         isActiveBomb = false,
         dinoHits = 0,
         dinoHealth = 300,
         gameTime = 0,
-        gameOverTime =10,
-        gameOver = false;
+        gameOverTime =500,
+        gameOver = false,
+        ufoHit = false
+        ;
 //=========================================================================
 // Dino Defender!
 // Dino Art courtesy of Wyverii, http://opengameart.org/content/unsealed-terrex
@@ -176,10 +179,10 @@ app.run = function (){
             // bind the input action event directly to trigger an animation
             myEngine.input.bindEvent('fire',this,"fire");
 
-            this.bindEvent('animEnd.fire',this,function() { console.log("Fired!"); });
-            this.bindEvent('animLoop.run_right',this,function() { console.log("right"); });
-            this.bindEvent('animLoop.run_left',this,function() { console.log("left"); });
-            this.bindEvent('animLoop.hop_up',this,function() { console.log("hop"); });
+           // this.bindEvent('animEnd.fire',this,function() { console.log("Fired!"); });
+           // this.bindEvent('animLoop.run_right',this,function() { console.log("right"); });
+           // this.bindEvent('animLoop.run_left',this,function() { console.log("left"); });
+           // this.bindEvent('animLoop.hop_up',this,function() { console.log("hop"); });
 
         },
 
@@ -187,14 +190,14 @@ app.run = function (){
         fire: function() {
             this.play('fire',1);
 
-
-            pos = this.transformLocalPosition( 0, 100 );
+            /*
+           pos = this.transformLocalPosition( 0, 100 );
             var newFireBall = new ClassFireBall( {
                 x: pos.x,
                 y: pos.y-150,
                 z:12
             } );
-            myEngine.getStage().insert( newFireBall );
+            myEngine.getStage().insert( newFireBall );*/
 
         },
 
@@ -271,7 +274,7 @@ app.run = function (){
                 //targetCount--;
 
                 this.play("zapped");
-                dinoHealth -= 5;
+                dinoHealth -= 20;
 
                 //this.parentStage.remove(this);
                 //if(targetCount === 0) { myEngine.stageScene('level'); }
@@ -303,7 +306,7 @@ app.run = function (){
             // poll for mouse status
 
             this.bindEvent('step',this,'updateAngle');
-            myEngine.input.bindEvent('mouseleftup',this,'fire');
+            myEngine.input.bindEvent('mouseleftdown',this,'fire');
         },
 
         fire: function() {
@@ -386,7 +389,7 @@ app.run = function (){
         step:function(dt) {
             var p = this.properties;
             this.properties.seconds -= dt;
-            if(p.y < canvasH - 65){
+            if(p.y < canvasH - 64){
 
                 if((this.properties.seconds > 0)){
                     this.physics.setPosition(myEngine.getStage().blueUFO.properties.x,
@@ -397,28 +400,36 @@ app.run = function (){
                     isActiveBomb = false;
                 }
             }
-            else
-            {
-                this.parentStage.remove(this);
-            }
 
-            if(myEngine.getStage().blueUFO.properties.beenHit === true)
+
+            if(ufoHit === true)
             {
                 this.parentStage.remove(this);
                 isActiveBomb = false;
+
             }
 
             this._super(dt);
         },
 
         checkHit: function(sprite) {
-            if(sprite instanceof ClassFireBall) {
+            if(sprite instanceof ClassFireBall ) {
                 //targetCount--;
                 this.beenHit = true;
+
                 dinoHits += 5;
                 isActiveBomb = false;
+                var pos = this.transformLocalPosition( 10, 0 );
+                var newEffect = new ClassExplosion( {x:pos.x, y:pos.y });
+                this.parentStage.insert( newEffect );
                 this.parentStage.remove(this);
                 //if(targetCount === 0) { myEngine.stageScene('level'); }
+            } else if (sprite instanceof ClassHouse || sprite instanceof BoundrySprite) {
+                dinoHealth-=10;
+                var pos = this.transformLocalPosition( 10, 0 );
+                var newEffect = new ClassExplosion( {x:pos.x, y:pos.y });
+                this.parentStage.insert( newEffect );
+                this.parentStage.remove(this);
             }
         }
 
@@ -454,6 +465,38 @@ app.run = function (){
 
     });
 
+//=========================================================================
+// Game Object - House
+    //create as a separate class so am able to detect collision with fatman
+//=========================================================================
+    var ClassHouse = Engine.Sprite.extend({
+
+        // name to help with debugging
+        name: "ClassHouse",
+
+        defaults: {
+            // Sprite properties
+            sheetName: "house",
+            x: (canvasW/2 + 20),
+            y: canvasH - 140,
+            z:3,
+            //physics properties
+            groupIndex: -1,
+            shape: "block",
+            restitution: 0.5,
+            bodyType: "static",
+            shape_width: 258,
+            shape_height: 168
+        },
+
+        init:function(props) {
+            this._super(props);
+
+        this.addComponent('physics', this.properties);
+
+        }
+
+    });
 
     //-------------------------------------------------------------------------
     // Game Object - BlueUFO
@@ -491,7 +534,6 @@ app.run = function (){
             this.addComponent('physics');
             this.bindEvent('contact',this,'checkHit');
             this.bindEvent('animLoop.fly',this,function() { console.log("fly"); });
-            isActiveUFO = true;
 
         },
 
@@ -499,16 +541,18 @@ app.run = function (){
             if(sprite instanceof ClassFireBall) {
                 //targetCount--;
                 this.beenHit = true;
+                //global variable used for bomb management
+                ufoHit = true;
                 dinoHits += 10;
                 this.physics.makeDynamic();
 
-
                 //if(targetCount === 0) { myEngine.stageScene('level'); }
             }
+
         },
 
         step:function(dt) {
-            //TODO figure out canvas offset property to get rid of magic number
+
             var p = this.properties;
             this.play( "fly" );
 
@@ -537,6 +581,9 @@ app.run = function (){
                     if(this.properties.seconds < 1 && this.properties.seconds > 0) {
                         this.properties.alpha = this.properties.seconds;
                     } else {
+                        var pos = this.transformLocalPosition( 10, 0 );
+                        var newEffect = new ClassExplosion( {x:pos.x, y:pos.y });
+                        this.parentStage.insert( newEffect );
                         this.parentStage.remove(this);
                         isActiveUFO=false;
                     }
@@ -576,8 +623,6 @@ app.run = function (){
         stage.camera.centerViewportOn( myEngine.width/2, myEngine.height/2 );
        // stage.world.toggleDebugDraw(true);
 
-        //todo create Bomb Manager function
-
 
         var newPlayer = new DinoClassPlayer( {z:10});
         stage.dinoPlayer = newPlayer;
@@ -605,35 +650,13 @@ app.run = function (){
             stage.insert(new Engine.Sprite({ sheetName: "ground", x: groundX + (173*i), y: canvasH - 50, z:2}));
         }
 
-        var house = new Engine.Sprite({
-            sheetName: "house",
-            x: (canvasW/2 + 20),
-            y: canvasH - 140,
-            z:3,
-            //physics properties
-            groupIndex: -1,
-            shape: "block",
-            restitution: 0.5,
-            bodyType: "static",
-            shape_width: 258,
-            shape_height: 168});
+        var house = new ClassHouse();
 
-        house.addComponent('physics', this.properties);
         stage.insert(house);
         stage.flamethrower = stage.insert(new ClassFlameThrower( {x: stage.dinoPlayer.properties.x + 30,
             y: stage.dinoPlayer.properties.y, z:20} ));
         stage.insert(new Engine.Sprite({ sheetName: "big_tree", x: 200, y: canvasH - 150, z:5}));
 
-
-      /*  var newUFO = new UFO( {
-            x: 100,
-            y: 50,
-            z:8,
-            id: "MrBlue"
-        } );
-
-        stage.blueUFO = newUFO;
-        stage.insert( newUFO );*/
 
 
         //stage.addComponent( "camera" );
@@ -690,7 +713,6 @@ app.run = function (){
         // Create a sprite sheet out of the loaded assets
         myEngine.compileSheets('dino.png','dino.json');
         myEngine.compileSheets('smoke.png','smoke.json');
-        myEngine.compileSheets('platformerSprites.png','platformerSprites.json');
         myEngine.compileSheets('ufos.png','ufos.json');
         myEngine.compileSheets('textures.png','textures.json');
         myEngine.compileSheets('fatman.png','fatman.json');
@@ -711,10 +733,11 @@ app.run = function (){
                 manageUFOs();
                 bombManager(dt);
                 gameOver = manageGameTime(dt);
+                manageStats();
             }
             else if(gameOver)
             {
-                alert("Game Over!");
+                $("#gameOver").html("Game Over!!!");
             }
 
         });
@@ -734,6 +757,9 @@ app.run = function (){
                     id: "MrBlue"
                 } );
 
+                isActiveUFO = true;
+                isActiveBomb = false;
+                ufoHit = false;
                 myEngine.getStage().blueUFO = newUFO;
                 myEngine.getStage().insert( newUFO );
             }
@@ -743,9 +769,8 @@ app.run = function (){
         function bombManager(dt){
 
             bombTime -= dt;
-            //console.log("dt: " + dt + " bombTime: " + bombTime);
-            if ( bombTime < 0 && isActiveBomb === false && isActiveUFO){
-                bombTime = 3;
+            if ( bombTime < 0 && isActiveBomb === false && isActiveUFO && !ufoHit ){
+                bombTime = bombSecs;
                 var newBomb = new ClassFatMan({ x: myEngine.getStage().blueUFO.properties.x,
                     y: myEngine.getStage().blueUFO.properties.y + 25});
                 myEngine.getStage().insert( newBomb );
@@ -754,17 +779,26 @@ app.run = function (){
         }
 
         function manageGameTime(dt){
-            var minGameTime;
+            var minGameTime, timerDiv, timeLeft;
             gameTime += dt;
             minGameTime = Math.floor(gameTime);
-            $('#timer').html("<p>gametime: " + minGameTime + "</p>");
-            console.log("gametime: " + minGameTime);
-            if(minGameTime > gameOverTime){
+            timeLeft = gameOverTime - minGameTime;
+            timerDiv = $('#timer');
+            timerDiv.html( timeLeft);
+
+            if(minGameTime >= gameOverTime){
                 return true;
             } else {
                 return false;
             }
 
+        }
+
+        function manageStats(){
+            var healthSpan, scoreSpan;
+            healthSpan = $('#dinoHealth')
+            healthSpan.html(dinoHealth);
+            $('#dinoScore').html(dinoHits );
         }
 
     });

@@ -143,9 +143,9 @@ var DEFAULT_KEYS = { LEFT: 'left', RIGHT: 'right',
 // Mouse constants
 //***********************
 var IsMSIE = navigator.appName.match(/Explorer/);
-var MOUSE_LEFT = IsMSIE ? 1 : 0;
+var MOUSE_LEFT =  0;
 var MOUSE_RIGHT = 2;
-var MOUSE_MIDDLE = IsMSIE ? 4 : 1;
+var MOUSE_MIDDLE = IsMSIE ? 2 : 1;
 
 //***********************
 // Gamepad constants
@@ -377,19 +377,19 @@ Engine.Input = function() {
 			container.on('mousedown', function(e) {
 				input.mousePos = _convertMouseCoordinates(e);
 				input.triggerEvent('mousedown', input.mousePos);
-
+                //console.log("e.button: " + e.button);
 				if( e.button == MOUSE_LEFT ) {
 					input.triggerEvent('mouseleftdown', input.mousePos);
 					input.mouseLeftDown = true;
-                    //console.log("mouseleftdown: " + input.mousePos.x + ", " + input.mousePos.y);
+
 				} else if( e.button == MOUSE_MIDDLE ) {
 					input.triggerEvent('mousemiddledown', input.mousePos);
 					input.mouseMiddleDown = true;
-                   // console.log("mousemiddle: " + input.mousePos.x + ", " + input.mousePos.y);
+
 				} else if( e.button == MOUSE_RIGHT ) {
 					input.triggerEvent('mouserightdown', input.mousePos);
 					input.mouseRightDown = true;
-                   // console.log("mouserightdown: " + input.mousePos.x + ", " + input.mousePos.y);
+
 				}
 				//e.preventDefault();	//@NOTE - this seems to get in the way of the keyboard callbacks
 										// but using it helps with disabling the double-click to highlight text on the page
