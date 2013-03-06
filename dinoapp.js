@@ -26,14 +26,17 @@ var FACEBOOK_APP_SECRET = process.env.FACEBOOK_SECRET || "7332cd2ec6b29861427cd0
 var FACEBOOK_CALLBACK_URL = process.env.FACEBOOK_CALLBACK_URL || "http://localhost:3000/auth/facebook/callback";
 
 
-//========================================================================
+
+//=========================================================================
 // Load our dependencies
 //
-
 var express = require('express'),
-    fs = require('fs'),
-    _ = require('underscore'),
-    mongodb = require('mongodb');
+    MongoClient = require('mongodb').MongoClient,
+    passport = require('passport');
+
+var LocalStrategy = require('passport-local').Strategy,
+    GoogleStrategy = require('passport-google').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy;
 
 //=========================================================================
 // Our app module is going to a customized express server
@@ -305,24 +308,24 @@ app.listen(port, function(){
 var dbMethods = {};
 
 // connect to the database
-mongodb.connect( mongodbURL, {}, function( error, db ) {
+MongoClient.connect( mongodbURL, {}, function( error, db ) {
 
     if( error ) {
-        console.log( "mongodb.connect: Could not connect to database: ");
+        console.log( "MongoClient.connect: Could not connect to database: ");
         console.log( error );
         return;
     }
-    console.log( "mongodb.connect: Connected to our mongodb databse. You should notice the connection in the mongod.exe logs." );
+    console.log( "MongoClient.connect: Connected to our mongodb databse. You should notice the connection in the mongod.exe logs." );
 
     // grab the "users" collection and generate a few utility functions
     db.collection('users', function(err, collection) {
 
         if( err ) {
-            console.log( "mongodb.db.collection: Could not connect to 'users' collection in the database" );
+            console.log( "MongoClient.db.collection: Could not connect to 'users' collection in the database" );
             console.log( err );
             return;
         }
-        console.log( "mongodb.db.collection: 'users' collection accessed, generating utility functions" );
+        console.log( "MongoClient.db.collection: 'users' collection accessed, generating utility functions" );
 
 
         //=========================================================================
@@ -433,7 +436,7 @@ mongodb.connect( mongodbURL, {}, function( error, db ) {
         };
 
     }); // end db.collection
-});     // end mongodb.connect
+});     // end MongoClient.connect
 
 
 //=========================================================================
