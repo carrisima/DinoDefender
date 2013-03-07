@@ -1,0 +1,10 @@
+{
+    "bluecrystal": {
+        "sx": 0,
+        "sy": 0,
+        "cols": 8,
+        "tilew": 31.25,
+        "tileh": 30,
+        "frames": 8
+    }
+}

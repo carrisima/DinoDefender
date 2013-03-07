@@ -15,7 +15,7 @@
         "tileh": 175,
         "frames": 1
     },
-    "big_tree": {
+    "bigtree": {
         "sx": 400,
         "sy": 375,
         "cols": 1,
@@ -23,7 +23,7 @@
         "tileh": 150,
         "frames": 1
     },
-    "small_tree": {
+    "smalltree": {
         "sx": 0,
         "sy": 869,
         "cols": 9,

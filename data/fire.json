@@ -1,0 +1,10 @@
+{
+    "flame": {
+        "sx": 0,
+        "sy": 0,
+        "cols": 5,
+        "tilew": 64,
+        "tileh": 64,
+        "frames": 5
+    }
+}
