@@ -200,7 +200,7 @@ Engine.Sprites = function() {
 			Engine.GetCurrentInstance().drawImage(this.getAsset(), posX, posY, width, height, angle, this.alpha );
 		}
 		else {
-			//console.log( "Cannot draw sprite because it has no sheetName or assetName");
+
 		}
 	};
 

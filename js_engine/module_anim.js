@@ -26,7 +26,7 @@
 //=========================================================================
 Engine.Animation = function() {
 
-	console.log( "Adding animation module" );
+	//console.log( "Adding animation module" );
 
 	//=========================================================================
 	// AnimationComponent
@@ -182,7 +182,7 @@ Engine.Animation = function() {
 	// Add a whole bunch of animations for a particular sprite name
 	//
 	Engine.prototype.addAnimationData = function(spriteName,animations) {
-		console.log( "Adding animation data for sprite:", spriteName );
+		//console.log( "Adding animation data for sprite:", spriteName );
 		if(!this._animations[spriteName]) {
 			this._animations[spriteName] = {};
 		}

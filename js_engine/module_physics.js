@@ -286,7 +286,6 @@ Engine.Physics = function() {
 				// @TODO, remove _debugDraw
 				// @TODO, use a secondary canvas
 			} else if( flag === true && this._debugDraw === undefined ) {
-				console.log( "Enabling Physics Debug Draw" );
 
 				this._debugDraw = new B2d.DebugDraw();
 				this._debugDraw.SetSprite( Engine.GetCurrentInstance().getCanvas() );

@@ -95,7 +95,7 @@ var Engine = (function() {
 	//=========================================================================
 	// stop game timer
 	pauseGame = function() {
-		console.log( "Engine Paused" );
+		//console.log( "Engine Paused" );
 		if(this.loop) {
 			cancelAnimationFrame(this.loop);
 		}
@@ -105,7 +105,7 @@ var Engine = (function() {
 	//=========================================================================
 	// resume game timer
 	unpauseGame = function() {
-		console.log( "Engine Unpaused" );
+		//console.log( "Engine Unpaused" );
 		if(!this.loop) {
 			this.lastGameLoopFrame = 0; //new Date().getTime();
 			this.loop = requestAnimationFrame(this.gameLoopCallbackWrapper);
@@ -148,7 +148,7 @@ var Engine = (function() {
 			sound: true
 		};
 		if(configOptions) { _(this.options).extend(configOptions); }
-		console.log( "New Engine instance. Options:", this.options );
+		//console.log( "New Engine instance. Options:", this.options );
 
 		// Member data
 		this.components = {};
