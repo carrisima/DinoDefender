@@ -39,11 +39,11 @@ app.run = function (){
         "smoke.json",
         "dino.png",
         "dino.json",
-        "platformerSprites.png",
-        "platformerSprites.json",
         "ufos.json","ufos.png",
         "textures.json","textures.png",
-        "fatman.png", "fatman.json"
+        "fatman.png", "fatman.json",
+        "crystals.png","crystals.json",
+        "fire.png", "fire.json"
 
     ];
 
@@ -178,11 +178,6 @@ app.run = function (){
 
             // bind the input action event directly to trigger an animation
             myEngine.input.bindEvent('fire',this,"fire");
-
-           // this.bindEvent('animEnd.fire',this,function() { console.log("Fired!"); });
-           // this.bindEvent('animLoop.run_right',this,function() { console.log("right"); });
-           // this.bindEvent('animLoop.run_left',this,function() { console.log("left"); });
-           // this.bindEvent('animLoop.hop_up',this,function() { console.log("hop"); });
 
         },
 
@@ -424,13 +419,24 @@ app.run = function (){
                 this.parentStage.insert( newEffect );
                 this.parentStage.remove(this);
                 //if(targetCount === 0) { myEngine.stageScene('level'); }
-            } else if (sprite instanceof ClassHouse || sprite instanceof BoundrySprite) {
+            } else if (sprite instanceof ClassHouse ) {
+                dinoHealth-=10;
+                var pos = this.transformLocalPosition( 10, 0 );
+                var newFire = new ClassFire( {x:pos.x, y:pos.y });
+                this.parentStage.insert( newFire );
+                this.parentStage.remove(this);
+            }
+            else if ( sprite instanceof BoundrySprite ||DinoClassPlayer) {
                 dinoHealth-=10;
                 var pos = this.transformLocalPosition( 10, 0 );
                 var newEffect = new ClassExplosion( {x:pos.x, y:pos.y });
                 this.parentStage.insert( newEffect );
-                this.parentStage.remove(this);
+                this.destroy();
             }
+        },
+
+        destroy: function() {
+            this._super();
         }
 
     });
@@ -461,6 +467,32 @@ app.run = function (){
             this.bindEvent('animEnd',this,function() {
                 this.destroy();
             });
+        }
+
+    });
+
+//=========================================================================
+// Game Object - Burning Fire Effect
+//=========================================================================
+    var ClassFire = Engine.Sprite.extend({
+
+        // name to help with debugging
+        name: "ClassFire",
+
+        defaults: {
+            // Sprite properties
+            sheetName: "flame",
+            animSetName: BombAnimationGroupName,
+            rate: 1/10,
+            z: 20
+        },
+
+        init:function(props) {
+            this._super(props);
+
+            this.addComponent('animation');
+            this.play( "burn" );
+
         }
 
     });
@@ -533,7 +565,7 @@ app.run = function (){
             this.addComponent('animation');
             this.addComponent('physics');
             this.bindEvent('contact',this,'checkHit');
-            this.bindEvent('animLoop.fly',this,function() { console.log("fly"); });
+
 
         },
 
@@ -655,8 +687,7 @@ app.run = function (){
         stage.insert(house);
         stage.flamethrower = stage.insert(new ClassFlameThrower( {x: stage.dinoPlayer.properties.x + 30,
             y: stage.dinoPlayer.properties.y, z:20} ));
-        stage.insert(new Engine.Sprite({ sheetName: "big_tree", x: 200, y: canvasH - 150, z:5}));
-
+        stage.insert(new Engine.Sprite({ sheetName: "bigtree", x: 200, y: canvasH - 150, z:5}));
 
 
         //stage.addComponent( "camera" );
@@ -716,6 +747,8 @@ app.run = function (){
         myEngine.compileSheets('ufos.png','ufos.json');
         myEngine.compileSheets('textures.png','textures.json');
         myEngine.compileSheets('fatman.png','fatman.json');
+        myEngine.compileSheets('fire.png','fire.json');
+        myEngine.compileSheets('crystals.png','crystals.json');
 
         // Assign animation data for sprites named 'player'
         myEngine.addAnimationData( DinoAnimationGroupName, DinoAnimationSequences );
@@ -771,8 +804,11 @@ app.run = function (){
             bombTime -= dt;
             if ( bombTime < 0 && isActiveBomb === false && isActiveUFO && !ufoHit ){
                 bombTime = bombSecs;
+
                 var newBomb = new ClassFatMan({ x: myEngine.getStage().blueUFO.properties.x,
                     y: myEngine.getStage().blueUFO.properties.y + 25});
+
+
                 myEngine.getStage().insert( newBomb );
                 isActiveBomb = true;
             }

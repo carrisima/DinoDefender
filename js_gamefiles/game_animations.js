@@ -71,6 +71,16 @@ var BombAnimationSequences = {
         frames: _.range(0,4),
         rate: 1/10,
         loop: true
+    },
+    burn: {
+        frames: _.range(0,4),
+        rate: 1/10,
+        loop: true
+    },
+    sparkle: {
+        frames: _.range(0,7),
+        rate: 1/5,
+        loop: true
     }
 
 };
