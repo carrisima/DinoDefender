@@ -278,7 +278,8 @@ app.post('/createAccount', function(req, res) {
     //     /auth/google/return
     app.get('/auth/google', passport.authenticate('google', { failureRedirect: '/' }),
         function(req, res) {
-            res.redirect('/');
+            console.log("redirected to auth/google");
+            res.redirect('/dinodefender.html');
         }
     );
 
@@ -287,7 +288,9 @@ app.post('/createAccount', function(req, res) {
     // logged in.  Otherwise, authentication has failed.
     app.get('/auth/google/return', passport.authenticate('google', { failureRedirect: '/' }),
         function(req, res) {
-            res.redirect('/');
+            console.log("redirected to auth/google/return");
+            res.redirect('/dinodefender.html');
+
         }
     );
 })();
@@ -353,6 +356,7 @@ MongoClient.connect( mongodbURL, {}, function( error, db ) {
             collection.findOne(selector, function(err, result){
                 if(result){
                     console.log("Found an existing user through authentication method!");
+                    callback (null, result);
                 }
                 else {
                     //no user found, create a new one and associate with auth properties
@@ -443,6 +447,7 @@ MongoClient.connect( mongodbURL, {}, function( error, db ) {
 // Launch page
 //
 app.get('/', function(req, res){
+   console.log("res.rend index");
     res.render('index', { user: req.user });
 });
 
@@ -467,7 +472,9 @@ app.post('/updateScore', ensureAuthenticatedUser, function(req,res) {
     console.log( "player score update requested with score: " + req.user.userScore );
     dbMethods.updateUserInfo( req.user, function(results) {
         console.log( "Player score updated? " + results );
+        res.send(req.body);
     } );
+
 });
 
 app.get('/top-ten',function(req,res) {

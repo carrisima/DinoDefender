@@ -17,7 +17,7 @@ app.run = function (){
         dinoHits = 0,
         dinoHealth = 300,
         gameTime = 0,
-        gameOverTime =500,
+        gameOverTime =5,
         gameOver = false,
         ufoHit = false
         ;
@@ -653,7 +653,7 @@ app.run = function (){
         stage.addComponent("world", PhysicsWorldProps);
         stage.addComponent("camera");
         stage.camera.centerViewportOn( myEngine.width/2, myEngine.height/2 );
-       // stage.world.toggleDebugDraw(true);
+        // stage.world.toggleDebugDraw(true);
 
 
         var newPlayer = new DinoClassPlayer( {z:10});
@@ -664,11 +664,11 @@ app.run = function (){
         var sky = new BoundrySprite( {z:1, x: canvasW/2, y: -200, shape_width: canvasW,
                 shape_height: 100}),
             ground = new BoundrySprite( {z:1, x: canvasW/2, y: canvasH - 25, shape_width: canvasW,
-            shape_height: 50}),
+                shape_height: 50}),
             leftBoundry = new BoundrySprite( {z:1, x: -48, y:100, shape_width: 50,
-            shape_height: canvasH + 200}),
+                shape_height: canvasH + 200}),
             rightBoundry = new BoundrySprite( {z:1, x: canvasW + 48, y: 100, shape_width: 50,
-            shape_height: canvasH + 200});
+                shape_height: canvasH + 200});
         //x offset 48
         stage.insert( sky );
         stage.insert( ground );
@@ -771,6 +771,10 @@ app.run = function (){
             else if(gameOver)
             {
                 $("#gameOver").html("Game Over!!!");
+
+                endGame();
+
+
             }
 
         });
@@ -832,11 +836,89 @@ app.run = function (){
 
         function manageStats(){
             var healthSpan, scoreSpan;
-            healthSpan = $('#dinoHealth')
+            healthSpan = $('#dinoHealth');
             healthSpan.html(dinoHealth);
             $('#dinoScore').html(dinoHits );
         }
 
+        function endGame(){
+            var gameOverDiv = $('#gameOverDiv');
+            gameOverDiv.fadeIn();
+            updateScore();
+            myEngine.clearStage();
+            myEngine.clearCanvas();
+            myEngine.pauseGame();
+
+        }
+
+        //update user score
+        function updateScore(){
+            $.ajax({
+                type: "POST",
+                url: "/updateScore",
+                // The key needs to match your method's input parameter (case-sensitive).
+                data: JSON.stringify({ userScore: dinoHits }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: getTopTen,
+                failure: function() {
+                    alert("Ajax post didn't happen.  boo");
+                }
+            });
+        console.log("update score to dinoHits");
+        }
+        //Get Top Ten Scores
+        function getTopTen()
+        {
+
+            // Show the top ten list automatically
+            console.log("showing top ten");
+            $.getJSON('/top-ten', function(data) { ; })
+
+                // When the /top-ten JSON get is successful
+                .success(function(data) {
+                    var listItems = [];
+
+                    // The returned data will include a "users" key we can ignore,
+                    // and a list of users and scores we'll want to loop through.
+                    // We only expect one list back but this seems good practice.
+                    $.each(data, function(usersKey, usersList) {
+                        // Loop through each user and score, creating a list item and adding
+                        // these to the listItems array. The list item includes name and score.
+                        $.each(usersList, function(idx, user) {
+                            listItems.push('<li id"' + user.displayName + '">' + user.displayName + '(id: ' + user.id + ') : ' + user.userScore + '</li>');
+                        });
+                    });
+
+                    console.log("listItems.length: " + listItems.length );
+
+                    if( listItems.length === 0 ) {
+                        $('<p/>', {
+                            html: "No scores posted"
+                        }).appendTo("#gameOverDiv");
+                    } else {
+                        // Create the list and add the top ten user scores to it
+                        $('<ul/>', {
+                            'class': 'top-ten-user-list',
+                            html: listItems.join('')
+                        }).appendTo('#gameOverDiv');
+                    }
+                })
+
+                // When the /top-ten JSON call fails show a nastygram
+                .error(function(data) {
+                    $('<p/>', {
+                        'class': 'errormsg',
+                        html: 'Unable to get list of top ten scores'
+                    }).appendTo('#gameOverDiv');
+                });
+        }
+
+        //Write Top ten scores to the DIV
+        function writeTopTen(toptenscores){
+            var gameOverDiv = $('#gameOverDiv');
+            gameOverDiv.html(toptenscores);
+        }
     });
 
 }

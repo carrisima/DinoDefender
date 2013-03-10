@@ -108,6 +108,25 @@ fieldset
 
 
 }
+
+#gameOverDiv
+{
+    position:absolute;
+    height: 60%;
+    width: 50%;
+    top: 25%;
+    left: 25%;
+    margin-right:auto;
+    margin-left:auto;
+    z-index: 25;
+    display: block;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background-color: #adff2f;
+    display:none;
+
+}
+
 #game .screen
 { 
     font-family: 'audiowideregular';

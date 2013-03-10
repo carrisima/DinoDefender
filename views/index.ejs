@@ -1,10 +1,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="js_libraries/modernizr.js"></script>
-<script src="loader.js"></script>
 
 <% if (!user) { %>
         <h2>Welcome! Please log in.</h2>
-        <p><a href="/auth/facebook"><img src="login-with-facebook.png" width="154" height="22"></a>
+        <p><a href="/auth/facebook"><img src="./images/login-with-facebook.png" width="154" height="22"></a>
         <p><a href="/auth/google">Login with Google</a>
 
         <form action="/" method="post">
@@ -22,106 +20,6 @@
                 </div>
         </form>
 
-<% } else { %>
-        <h2>Hello, <%= user.displayName %>. (id: <%= user._id %>)</h2>
-
 <% } %>
 
-<div id="debugging" style="display:block">
-        <h3>DEVELOPER LINKS - Testing Only</h3>
-        <p><a href="/clearUsers">Clear 'users' collection!</a></p>
-</div> <!-- debugging -->
 
-
-<!--
-If want to display our leaderboard like this on the main page, we have two options to doing it:
-1) Do it through the ejs template. It means passing the leaderboard data in as a parameter
-   just like we pass in the user. Then we can generate the HTML without using JQuery.
-2) Doing it on the client through AJAX. This is the way the following code is doing it (grabbed from Mikey)
--->
-<div id="toptenwrapper">
-        <hr>
-        <h3>Top-Ten Leaderboard</h3>
-        <div id="topten"><!-- We'll put the top ten scores here --></div>
-        <script>
-                // Show the top ten list automatically
-                $.getJSON('/top-ten', function(data) { ; })
-
-                // When the /top-ten JSON get is successful
-                .success(function(data) {
-                        var listItems = [];
-
-                        // The returned data will include a "users" key we can ignore,
-                        // and a list of users and scores we'll want to loop through.
-                        // We only expect one list back but this seems good practice.
-                        $.each(data, function(usersKey, usersList) {
-                                // Loop through each user and score, creating a list item and adding
-                                // these to the listItems array. The list item includes name and score.
-                                $.each(usersList, function(idx, user) {
-                                        listItems.push('<li id"' + user.displayName + '">' + user.displayName + '(id: ' + user.id + ') : ' + user.userScore + '</li>');
-                                });
-                        });
-
-                        console.log("listItems.length: " + listItems.length );
-
-                        if( listItems.length === 0 ) {
-                                $('<p/>', {
-                                        html: "No scores posted"
-                                }).appendTo("#topten");
-                        } else {
-                                // Create the list and add the top ten user scores to it
-                                $('<ul/>', {
-                                        'class': 'top-ten-user-list',
-                                        html: listItems.join('')
-                                }).appendTo('#topten');
-                        }
-                })
-
-                // When the /top-ten JSON call fails show a nastygram
-                .error(function(data) {
-                        $('<p/>', {
-                                'class': 'errormsg',
-                                html: 'Unable to get list of top ten scores'
-                        }).appendTo('#topten');
-                });
-        </script>
-        <hr>
-</div> <!-- toptenwrapper -->
-
-
-<div id="content" style="display:block">
-
-<% if (!user) { %>
-        <p>Please login to play the game!</p>
-<% } else { %>
-
-        <center><h2>Block Break Online</h2></center>
-        <div id="canvasframe">
-                <canvas id="gamecanvas" width="320" height="420" tabindex="0">
-                        Alas for your ancient coal-fired browser that doesn't support the canvas element.
-                        No game for you until you upgrade. Maybe try
-                        <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a> or
-                        <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a>.
-                </canvas>
-
-                <!-- HUD -->
-                <div id="gameLives">Lives: <span id="gameLivesNumber">0</span></div>
-                <div id="gameScore">Score: <span id="gameScoreNumber">0</span></div>
-
-                <!-- Loading Screen -->
-                <div id="getLoadedText">Loading game...</div>
-        <div id="getLoadedProgress"></div>
-
-                <!-- Game Screens -->
-                <div id="mainMenu">Press Spacebar to play.</div>
-                <div id="gameOver">Game Over. Press Spacebar to play again.</div>
-        </div>
-
-        <script>
-                console.log( "appLoader", appLoader );
-                appLoader.loadEngine( );
-        </script>
-
-<% } %>
-
-</div> <!-- content -->
