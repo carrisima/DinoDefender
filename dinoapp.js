@@ -394,9 +394,11 @@ MongoClient.connect( mongodbURL, {}, function( error, db ) {
             }
 
             //@TODO - make this work using .update() instead
+
             collection.save(userInfo, function(error, results) {
                 if( error ) {
                     console.log( "Could not update score for user" );
+                    callback( false );
                     callback( false );
                 } else {
                     console.log( "Score updated!", results );

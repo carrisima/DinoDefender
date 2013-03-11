@@ -15,10 +15,11 @@ app.run = function (){
         bombSecs = 2,
         isActiveBomb = false,
         dinoHits = 0,
-        dinoHealth = 300,
+        dinoHealth = 100,
         gameTime = 0,
-        gameOverTime =5,
+        gameOverTime =50,
         gameOver = false,
+        damnitGameIsOver = false,
         ufoHit = false
         ;
 //=========================================================================
@@ -762,19 +763,16 @@ app.run = function (){
         // Setup level to loop
         myEngine.setGameLoop(function(dt) {
             myEngine.stageGameLoop(dt);
-            if(!gameOver){
+            if(gameOver){
+                $("#gameOver").html("Game Over!!!");
+                endGame();
+            }
+            else
+            {
                 manageUFOs();
                 bombManager(dt);
                 gameOver = manageGameTime(dt);
                 manageStats();
-            }
-            else if(gameOver)
-            {
-                $("#gameOver").html("Game Over!!!");
-
-                endGame();
-
-
             }
 
         });
@@ -827,10 +825,11 @@ app.run = function (){
             timerDiv.html( timeLeft);
 
             if(minGameTime >= gameOverTime){
+
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
 
         }
 
@@ -843,8 +842,14 @@ app.run = function (){
 
         function endGame(){
             var gameOverDiv = $('#gameOverDiv');
+
             gameOverDiv.fadeIn();
-            updateScore();
+            if(!damnitGameIsOver){
+                updateScore();
+            }
+            //main game loop seems to execute one more time, need to stop
+            //updateScore from repeating so use one more global to track
+            damnitGameIsOver = true;
             myEngine.clearStage();
             myEngine.clearCanvas();
             myEngine.pauseGame();
@@ -853,6 +858,7 @@ app.run = function (){
 
         //update user score
         function updateScore(){
+
             $.ajax({
                 type: "POST",
                 url: "/updateScore",
@@ -865,14 +871,13 @@ app.run = function (){
                     alert("Ajax post didn't happen.  boo");
                 }
             });
-        console.log("update score to dinoHits");
         }
         //Get Top Ten Scores
         function getTopTen()
         {
 
             // Show the top ten list automatically
-            console.log("showing top ten");
+
             $.getJSON('/top-ten', function(data) { ; })
 
                 // When the /top-ten JSON get is successful
@@ -914,11 +919,7 @@ app.run = function (){
                 });
         }
 
-        //Write Top ten scores to the DIV
-        function writeTopTen(toptenscores){
-            var gameOverDiv = $('#gameOverDiv');
-            gameOverDiv.html(toptenscores);
-        }
+
     });
 
 }
