@@ -17,7 +17,7 @@ app.run = function (){
         dinoHits = 0,
         dinoHealth = 100,
         gameTime = 0,
-        gameOverTime =50,
+        gameOverTime =10,
         gameOver = false,
         damnitGameIsOver = false,
         ufoHit = false
@@ -891,7 +891,10 @@ app.run = function (){
                         // Loop through each user and score, creating a list item and adding
                         // these to the listItems array. The list item includes name and score.
                         $.each(usersList, function(idx, user) {
+                            if(user.userScore > 0)
+                            {
                             listItems.push('<li id"' + user.displayName + '">' + user.displayName + '(id: ' + user.id + ') : ' + user.userScore + '</li>');
+                            }
                         });
                     });
 

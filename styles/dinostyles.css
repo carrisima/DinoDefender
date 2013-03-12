@@ -111,6 +111,7 @@ fieldset
 
 #gameOverDiv
 {
+    font: .8em 'audiowideregular';
     position:absolute;
     height: 60%;
     width: 50%;

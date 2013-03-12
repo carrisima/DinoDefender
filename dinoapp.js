@@ -137,7 +137,7 @@ function ensureAuthenticatedUser(req, res, next){
 //   which, in this example, will redirect the user to the home page.
 //
 app.post('/',
-    passport.authenticate('local', { failureRedirect: '/', successRedirect: '/', failureFlash: true }),
+    passport.authenticate('local', { failureRedirect: '/', successRedirect: '/dinodefender.html', failureFlash: true }),
     function(req, res) {
         res.redirect('/');
     });
