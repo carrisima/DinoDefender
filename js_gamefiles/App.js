@@ -17,7 +17,7 @@ app.run = function (){
         dinoHits = 0,
         dinoHealth = 100,
         gameTime = 0,
-        gameOverTime =10,
+        gameOverTime =50,
         gameOver = false,
         damnitGameIsOver = false,
         ufoHit = false
@@ -766,6 +766,9 @@ app.run = function (){
             if(gameOver){
                 $("#gameOver").html("Game Over!!!");
                 endGame();
+            } else if (dinoHealth <= 0)
+            {
+                youDied();
             }
             else
             {
@@ -838,6 +841,17 @@ app.run = function (){
             healthSpan = $('#dinoHealth');
             healthSpan.html(dinoHealth);
             $('#dinoScore').html(dinoHits );
+        }
+
+        function youDied(){
+            var gameOverDiv = $('#gameOverDiv');
+
+            gameOverDiv.fadeIn();
+            gameOverDiv.html("<p>&nbsp;</p><p>&nbsp;</p><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOOOOOO DINO DIED!!!!!</p>" );
+            myEngine.clearStage();
+            myEngine.clearCanvas();
+            myEngine.pauseGame();
         }
 
         function endGame(){
