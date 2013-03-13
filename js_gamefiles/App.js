@@ -17,7 +17,7 @@ app.run = function (){
         dinoHits = 0,
         dinoHealth = 100,
         gameTime = 0,
-        gameOverTime =50,
+        gameOverTime =20,
         gameOver = false,
         damnitGameIsOver = false,
         ufoHit = false
@@ -44,7 +44,10 @@ app.run = function (){
         "textures.json","textures.png",
         "fatman.png", "fatman.json",
         "crystals.png","crystals.json",
-        "fire.png", "fire.json"
+        "fire.png", "fire.json",
+        "robotdinosaur_green.jpg",
+        "robottriceratops_sm.jpg",
+        "robottyro_sm.jpg"
 
     ];
 
@@ -844,11 +847,9 @@ app.run = function (){
         }
 
         function youDied(){
-            var gameOverDiv = $('#gameOverDiv');
+            var dinoDiedDiv = $('#dinoDiedDiv');
 
-            gameOverDiv.fadeIn();
-            gameOverDiv.html("<p>&nbsp;</p><p>&nbsp;</p><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOOOOOO DINO DIED!!!!!</p>" );
+            dinoDiedDiv.fadeIn();
             myEngine.clearStage();
             myEngine.clearCanvas();
             myEngine.pauseGame();
@@ -898,16 +899,18 @@ app.run = function (){
                 .success(function(data) {
                     var listItems = [];
 
+
                     // The returned data will include a "users" key we can ignore,
                     // and a list of users and scores we'll want to loop through.
                     // We only expect one list back but this seems good practice.
                     $.each(data, function(usersKey, usersList) {
                         // Loop through each user and score, creating a list item and adding
                         // these to the listItems array. The list item includes name and score.
+                        //  removing user.id from display
                         $.each(usersList, function(idx, user) {
                             if(user.userScore > 0)
                             {
-                            listItems.push('<li id"' + user.displayName + '">' + user.displayName + '(id: ' + user.id + ') : ' + user.userScore + '</li>');
+                            listItems.push('<li id"' + user.displayName + '">' + user.displayName +": " + user.userScore + '</li>');
                             }
                         });
                     });
@@ -917,14 +920,16 @@ app.run = function (){
                     if( listItems.length === 0 ) {
                         $('<p/>', {
                             html: "No scores posted"
-                        }).appendTo("#gameOverDiv");
+                        }).appendTo("#topTenScores");
                     } else {
                         // Create the list and add the top ten user scores to it
+
                         $('<ul/>', {
-                            'class': 'top-ten-user-list',
+
                             html: listItems.join('')
-                        }).appendTo('#gameOverDiv');
+                        }).appendTo('#topTenScores');
                     }
+
                 })
 
                 // When the /top-ten JSON call fails show a nastygram
@@ -933,6 +938,7 @@ app.run = function (){
                         'class': 'errormsg',
                         html: 'Unable to get list of top ten scores'
                     }).appendTo('#gameOverDiv');
+
                 });
         }
 

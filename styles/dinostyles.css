@@ -109,7 +109,7 @@ fieldset
 
 }
 
-#gameOverDiv
+#gameOverDiv, #dinoDiedDiv
 {
     font: .8em 'audiowideregular';
     position:absolute;
